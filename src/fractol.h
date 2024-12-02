@@ -6,7 +6,7 @@
 /*   By: davmoren <davmoren@student.42urdliz.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 11:21:19 by davmoren          #+#    #+#             */
-/*   Updated: 2024/11/28 01:39:44 by davmoren         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:54:36 by davmoren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 //#include "../lib/MLX42/include/MLX42/MLX42.h"
 #include <stdio.h>  
 #include <math.h>
-#define MAX_ITER 100
+#define MAX_ITER 10000
 #define MAX_ARG_SIZE 30
 
 
@@ -51,6 +51,7 @@ typedef struct {
     char *data;
     void *win;
     void *img;
+    int key_press;
 } Ventana;
 typedef struct{
 	TipoFractal type;
@@ -61,7 +62,16 @@ typedef struct{
 	int x;
 	int y;
     
-} comand; 
+} comand;
+typedef struct {
+    int min_x;
+    int max_x;
+    int max_y;
+    int min_y;
+    int is_dragging;
+    int last_mouse_x;
+    int last_mouse_y;
+}   mouse;
 typedef struct {
     TipoFractal tipo;
     double c;
@@ -77,6 +87,12 @@ typedef struct {
     comand *comand;
     Ventana *Ventana;
 } Fractal;
+typedef struct s_data {
+    mouse mouse;
+    comand comand;
+    Fractal fractal;
+    Ventana ventana;
+} t_data;
 
 
 void tipo_fractal(TipoFractal *tipo, int i, char *str);
@@ -86,5 +102,6 @@ void draw_fractal(Ventana ventana, Fractal fractal, comand *comand);
 char *select_type(char *str,int i);
 void add_command(char *argfind, comand *comand, int i, char **av,TipoFractal *tipo);
 comand *arguments(int ac,  char **av, comand *comand, TipoFractal *tipo);
+int mouse_press(int button, int x, int y, t_data *data);
 
 #endif
