@@ -1,5 +1,20 @@
 #include "fractol.h"
 
+int redrawing(t_data *data) {
+    mlx_clear_window(data->ventana.mlx, data->ventana.win);
+    clear_image(data->ventana);
+    draw_fractal(data->ventana, data->fractal, &data->comand);
+    mlx_put_image_to_window(data->ventana.mlx, data->ventana.win, data->ventana.img, 0, 0);
+    return 0;
+}
+
+int close_program(t_data *data) {
+    mlx_destroy_window(data->ventana.mlx, data->ventana.win);
+    exit(0);
+    return 0;
+}
+
+
 int main(int ac, char **av) {
     Ventana ventana;
     Fractal fractal;
@@ -34,21 +49,23 @@ int main(int ac, char **av) {
 
     fractal.iteraciones = cmd->interaction;
     fractal.zoom = 1.0;
-    fractal.cx = 0.0;
+    fractal.cx = -0.5;
     fractal.cy = 0.0;
 
     // Inicializar la estructura de datos
     data.ventana = ventana;
     data.fractal = fractal;
     data.comand = *cmd;
-
-    // Dibujar fractal inicial
+    clear_image(data.ventana);
     draw_fractal(data.ventana, data.fractal, &data.comand);
 
     // Registrar eventos
     mlx_hook(ventana.win, 4, 1L << 2, mouse_press, &data);
+    mlx_loop_hook(ventana.mlx, redrawing, &data);
+    mlx_hook(data.ventana.win, 2, 1L << 0, handle_key, &data);
+    mlx_hook(data.ventana.win, 17, 0, close_program, &data);
 
-    // Mostrar imagen
+   
     mlx_put_image_to_window(ventana.mlx, ventana.win, ventana.img, 0, 0);
 
     mlx_loop(ventana.mlx);

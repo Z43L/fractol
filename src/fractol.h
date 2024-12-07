@@ -82,7 +82,7 @@ typedef struct {
     double cy;
     double zy;
     double zx;
-    int zoom;
+    double zoom;
     int offset;
     comand *comand;
     Ventana *Ventana;
@@ -103,5 +103,9 @@ char *select_type(char *str,int i);
 void add_command(char *argfind, comand *comand, int i, char **av,TipoFractal *tipo);
 comand *arguments(int ac,  char **av, comand *comand, TipoFractal *tipo);
 int mouse_press(int button, int x, int y, t_data *data);
+int redrawing(t_data *data);
+void clear_image(Ventana ventana);
+int handle_key(int keycode, t_data *data);
+int close_program(t_data *data);
 
 #endif
